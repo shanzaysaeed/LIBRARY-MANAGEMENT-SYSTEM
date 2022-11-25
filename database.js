@@ -95,7 +95,7 @@ connectionString.connect( (error)=>
                 table_query_4= 'CREATE TABLE LMS.Issued_Books (book_id int NOT NULL, student_id int NOT NULL, issued_by int NOT NULL, due_date Varchar(20) NOT NULL, FOREIGN KEY (book_id) REFERENCES Books(book_id), FOREIGN KEY (student_id) REFERENCES Students(student_id), PRIMARY KEY(book_id, student_id),  FOREIGN KEY (issued_by) REFERENCES Staff(staff_id));'
                 createTable(table_query_4)
 
-                table_query_5= 'CREATE TABLE LMS.Returned_Books(book_id int NOT NULL, student_id int NOT NULL, issued_by int NOT NULL, due_date Varchar(100) NOT NULL, returned_date Varchar(100) NOT NULL, fine int, FOREIGN KEY (book_id) REFERENCES Books(book_id), FOREIGN KEY (student_id) REFERENCES Students(student_id), PRIMARY KEY(book_id, student_id),  FOREIGN KEY (issued_by) REFERENCES Staff(staff_id));'
+                table_query_5= 'CREATE TABLE LMS.Returned_Books(book_id int NOT NULL, student_id int NOT NULL, issued_by int NOT NULL, due_date Varchar(100) NOT NULL, returned_date Varchar(100) NOT NULL, FOREIGN KEY (book_id) REFERENCES Books(book_id), FOREIGN KEY (student_id) REFERENCES Students(student_id), PRIMARY KEY(book_id, student_id),  FOREIGN KEY (issued_by) REFERENCES Staff(staff_id));'
                 createTable(table_query_5)
 
                 table_query_6= 'CREATE TABLE LMS.Requested_books( book_title  Varchar(255) NOT NULL, requested_by int NOT NULL, author Varchar(100) NOT NULL, edition int , status Varchar (20), PRIMARY KEY (book_title, requested_by) , FOREIGN KEY (requested_by) REFERENCES Students(student_id));'
