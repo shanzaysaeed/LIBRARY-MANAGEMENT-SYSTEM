@@ -101,7 +101,7 @@ connectionString.connect( (error)=>
                 table_query_6= 'CREATE TABLE LMS.Requested_books( book_title  Varchar(255) NOT NULL, requested_by int NOT NULL, author Varchar(100) NOT NULL, edition int , status Varchar (20), PRIMARY KEY (book_title, requested_by) , FOREIGN KEY (requested_by) REFERENCES Students(student_id));'
                 createTable(table_query_6)
 
-                table_query_7= 'CREATE TABLE LMS.Help (query_no int NOT NULL  AUTO_INCREMENT,student_id int NOT NULL,resolved_by int NOT NULL,query varchar(2000) NOT NULL,status varchar(100) DEFAULT NULL,PRIMARY KEY (query_no));'
+                table_query_7= 'CREATE TABLE LMS.Help (query_no int NOT NULL UNIQUE AUTO_INCREMENT,student_id int NOT NULL,resolved_by int NOT NULL,query varchar(2000) NOT NULL,status varchar(100) DEFAULT NULL,PRIMARY KEY (query,student_id));'
                 createTable(table_query_7)
 
 
