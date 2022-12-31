@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import './req_books.css'
+import baseURL from './routerlink'
 import Sfnav from './sfnavsect'
 
 
@@ -8,19 +9,20 @@ function Booksreq() {
 
   useEffect(()=>{
   console.log("sent")
-  fetch("http://localhost:5000/reqbooks_info")
+  fetch(baseURL+"/reqbooks_info")
   .then((res)=>res.json())
   .then((data)=>{  
       setbooksinfo(data)
   })
   },[])
 
+  console.log(baseURL)
   const approval=(e,title,sid)=>{
     booksinfo.map((info)=> {
       const state=e.target.textContent
       console.log(state)
       if (info.book_title === title && info.requested_by === sid){
-          fetch(`http://localhost:5000/${state}`, {  
+          fetch(baseURL+`/${state}`, {  
           method: 'POST',
           headers: {
             'Accept': 'application/json',

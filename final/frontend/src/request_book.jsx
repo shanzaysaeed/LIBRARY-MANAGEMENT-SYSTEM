@@ -5,6 +5,8 @@ import "./sfnavsect.css"
 // import {useEffect} from 'react';
 import {useState} from 'react';
 import Stnav from "./stnav";
+import baseURL from "./routerlink";
+
 
 const Request = () => {
     var full_url = document.URL; // Get current url
@@ -34,7 +36,7 @@ const Request = () => {
     const handleClick = async e =>{
         e.preventDefault()
         try{
-            await axios.post(`http://localhost:5000/requestbook/${us_id}`, book)
+            await axios.post(baseURL+`/requestbook/${us_id}`, book)
             navigate(`/sthome?id:${us_id}`)
         }catch(err){
             console.log(err);

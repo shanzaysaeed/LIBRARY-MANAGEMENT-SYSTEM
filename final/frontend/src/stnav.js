@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./sfnavsect.css"
-
-
+import baseURL from "./routerlink";
 
 const Stnav = (prop)=>{
   const navigate = useNavigate();

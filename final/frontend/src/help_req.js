@@ -1,13 +1,14 @@
 import React, { useEffect, useState} from 'react'
 import './issued_books.css'
 import Sfnav from './sfnavsect'
+import baseURL from './routerlink'
 
 
 function Helpreq() {
   const [booksinfo, setbooksinfo]= useState("")
   useEffect(()=>{
   console.log("sent")
-  fetch("http://localhost:5000/helpreq")
+  fetch(baseURL+"/helpreq")
   .then((res)=>res.json())
   .then((data)=>{  
       setbooksinfo(data)
@@ -20,7 +21,7 @@ function Helpreq() {
       if (info.sid === sid && info.query === query){
           console.log("inside if ")
           console.log({state})
-          fetch(`http://localhost:5000/${state}`, {  
+          fetch(baseURL+`/${state}`, {  
           method: 'POST',
           headers: {
             'Accept': 'application/json',

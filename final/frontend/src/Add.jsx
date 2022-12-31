@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
 // import {useEffect} from 'react';
 import {useState} from 'react';
+import baseURL from "./routerlink";
 
 const Addbook = () => {
     const [book, setBook] = useState({
@@ -25,7 +26,7 @@ const Addbook = () => {
     const handleClick = async e =>{
         e.preventDefault()
         try{
-            await axios.post("http://localhost:5000/addbook", book)
+            await axios.post(baseURL+"/addbook", book)
             navigate("/sfhome")
         }catch(err){
             console.log(err);

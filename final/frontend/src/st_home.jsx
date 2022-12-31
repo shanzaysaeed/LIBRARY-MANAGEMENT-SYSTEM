@@ -7,6 +7,8 @@ import arrow from './arrow.png';
 // import Stnav from './stnav';
 import { useNavigate } from "react-router-dom";
 import "./sfnavsect.css"
+import baseURL from "./routerlink";
+
 
 
 const Sthome = () => {
@@ -55,7 +57,7 @@ const Sthome = () => {
         // console.log("here0")
         const fetchAllBooks = async()=>{
             try{
-                const res = await axios.get("http://localhost:5000/books")
+                const res = await axios.get(baseURL+"/books")
                 console.log("data",res.data)
                 setBooks(res.data)
             }catch(err){
@@ -69,11 +71,11 @@ const Sthome = () => {
         try{
             
 
-            const res = await axios.get("http://localhost:5000/getlib")
+            const res = await axios.get(baseURL+"/getlib")
             // console.log(res.data.staff_id)
 
-            await axios.post(`http://localhost:5000/issuebook/${us_id} ` + res.data.staff_id, book)
-            await axios.put(`http://localhost:5000/updateStatus/`+ book.book_id, book)
+            await axios.post(baseURL+`/issuebook/${us_id} ` + res.data.staff_id, book)
+            await axios.put(baseURL+`/updateStatus/`+ book.book_id, book)
             // console.log(book);
             refreshPage();
         }catch(err){
@@ -99,8 +101,8 @@ const Sthome = () => {
         try{
             const col = document.getElementById("selecttext");
             console.log(col)
-            // console.log("http://localhost:5000/books/"+col.innerText+"/"+Search.s)
-            const res = await axios.get("http://localhost:5000/searchbook/"+col.innerText+"/"+Search.s)
+            // console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            const res = await axios.get(baseURL+"/searchbook/"+col.innerText+"/"+Search.s)
             setBooks(res.data)
         }catch(err){
             console.log(err);

@@ -7,6 +7,8 @@ import arrow from './arrow.png';
 import Stnav from './stnav';
 import { useNavigate } from "react-router-dom";
 import "./sfnavsect.css"
+import baseURL from "./routerlink";
+
 
 
 const BorrowedBooks = () => {
@@ -55,7 +57,7 @@ const BorrowedBooks = () => {
         // console.log("here0")
         const fetchAllBooks = async()=>{
             try{
-                const res = await axios.get(`http://localhost:5000/borrowedbooks/${us_id}`)
+                const res = await axios.get(baseURL+`/borrowedbooks/${us_id}`)
                 setBooks(res.data)
             }catch(err){
                 console.log(err)
@@ -66,8 +68,8 @@ const BorrowedBooks = () => {
 
     const handleRenew = async(book)=>{
         try{
-            const res = await axios.get(`http://localhost:5000/getduedate/${us_id} ` + book.book_id)
-            await axios.put(`http://localhost:5000/renew/${us_id} `+ book.book_id, res.data)
+            const res = await axios.get(baseURL+`/getduedate/${us_id} ` + book.book_id)
+            await axios.put(baseURL+`/renew/${us_id} `+ book.book_id, res.data)
             refreshPage();
             // console.log(book);
         }catch(err){
@@ -77,11 +79,11 @@ const BorrowedBooks = () => {
 
     const handleReturn = async(book)=>{
         try{
-            const lib = await axios.get("http://localhost:5000/getlib")
-            await axios.put(`http://localhost:5000/setfine/${us_id} ` + book.due_date)
-            await axios.post(`http://localhost:5000/returnbook/${us_id} ` + lib.data.staff_id, book)
-            await axios.delete(`http://localhost:5000/book/${us_id} `+book.book_id)
-            await axios.put(`http://localhost:5000/revertStatus/`+ book.book_id, book)
+            const lib = await axios.get(baseURL+"/getlib")
+            await axios.put(baseURL+`/setfine/${us_id} ` + book.due_date)
+            await axios.post(baseURL+`/returnbook/${us_id} ` + lib.data.staff_id, book)
+            await axios.delete(baseURL+`/book/${us_id} `+book.book_id)
+            await axios.put(baseURL+`/revertStatus/`+ book.book_id, book)
             refreshPage();
         }catch(err){
             console.log(err)
@@ -106,8 +108,8 @@ const BorrowedBooks = () => {
         try{
             const col = document.getElementById("selecttext");
             console.log(col)
-            console.log("http://localhost:5000/books/"+col.innerText+"/"+Search.s)
-            const res = await axios.get("http://localhost:5000/books/"+col.innerText+"/"+Search.s)
+            console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            const res = await axios.get(baseURL+"/books/"+col.innerText+"/"+Search.s)
             setBooks(res.data)
         }catch(err){
             console.log(err);

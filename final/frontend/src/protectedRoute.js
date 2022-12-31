@@ -2,12 +2,14 @@ import Axios from "axios"
 import { useEffect } from "react"
 import Home from "./App"
 const { Outlet } = require("react-router-dom")
+import baseURL from "./routerlink";
+
 
 
 
 const useAuth=()=>{
     useEffect(()=>{
-        Axios.get("http://localhost:5000/isuerauth",{
+        Axios.get(baseURL+"/isuerauth",{
         headers:{
             "x-access-token": localStorage.getItem("token")
         }

@@ -3,6 +3,8 @@ import axios from 'axios';
 import {Link} from "react-router-dom";
 import {useEffect} from 'react';
 import {useState} from 'react';
+import baseURL from "./routerlink";
+
 // import Add from "./pages/Add";
 
 const Search = () => {
@@ -13,7 +15,7 @@ const Search = () => {
             // console.log("here1")
             try{
                 // console.log("here2")
-                const res = await axios.get("http://localhost:8800/books")
+                const res = await axios.get(baseURL+"/books")
                 setBooks(res.data)
             }catch(err){
                 // console.log("here3")
@@ -26,7 +28,7 @@ const Search = () => {
 
     const handleDelete = async (id)=>{
         try{
-            await axios.delete("http://localhost:8800/book/"+id)
+            await axios.delete(baseURL+"/book/"+id)
             window.location.reload()
         }catch(err){
             console.log(err)

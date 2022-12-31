@@ -4,6 +4,8 @@ import {Link, useNavigate} from "react-router-dom";
 // import {useEffect} from 'react';
 import {useState} from 'react';
 import "./sfnavsect.css"
+import baseURL from "./routerlink";
+
 
 const Help = () => {
     var full_url = document.URL; // Get current url
@@ -31,8 +33,8 @@ const Help = () => {
     const handleClick = async e =>{
         e.preventDefault()
         try{
-            const qno = await axios.get("http://localhost:5000/maxquery");
-            await axios.post(`http://localhost:5000/help/${us_id} `+ qno.data.count, query)
+            const qno = await axios.get(baseURL+"/maxquery");
+            await axios.post(baseURL+`/help/${us_id} `+ qno.data.count, query)
             navigate(`/sthome?id:${us_id}`)
         }catch(err){
             console.log(err);

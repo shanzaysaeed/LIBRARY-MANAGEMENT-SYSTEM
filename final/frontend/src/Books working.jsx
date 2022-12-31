@@ -43,7 +43,7 @@ const Books = () => {
         // console.log("here0")
         const fetchAllBooks = async()=>{
             try{
-                const res = await axios.get("http://localhost:8800/books")
+                const res = await axios.get(baseURL+"/books")
                 setBooks(res.data)
             }catch(err){
                 console.log(err)
@@ -54,7 +54,7 @@ const Books = () => {
 
     const handleDelete = async (id)=>{
         try{
-            await axios.delete("http://localhost:8800/book/"+id)
+            await axios.delete(baseURL+"/book/"+id)
             window.location.reload()
         }catch(err){
             console.log(err)
@@ -76,8 +76,8 @@ const Books = () => {
         try{
             const col = document.getElementById("selecttext");
             console.log(col)
-            console.log("http://localhost:8800/books/"+col.innerText+"/"+Search.s)
-            const res = await axios.get("http://localhost:8800/books/"+col.innerText+"/"+Search.s)
+            console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            const res = await axios.get(baseURL+"/books/"+col.innerText+"/"+Search.s)
             setBooks(res.data)
         }catch(err){
             console.log(err);

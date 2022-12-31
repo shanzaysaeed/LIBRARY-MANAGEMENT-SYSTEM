@@ -4,6 +4,8 @@ import { useState } from "react"
 import { useNavigate,Link } from "react-router-dom"
 import Axios from "axios"
 import "./stlogin.css"
+import baseURL from "./routerlink";
+
 
 
 
@@ -16,7 +18,7 @@ function Loginst(){
     const handlesubmit=(e)=>{
         e.preventDefault()
         seterror("")
-        fetch("http://localhost:5000/sflogin",{
+        fetch(baseURL+"/sflogin",{
             method:"POST",
             headers:{
                 'Accept':'application/json',
@@ -30,7 +32,7 @@ function Loginst(){
             .then((data)=>{
                 if(data.hasOwnProperty("suc")){
                     localStorage.setItem("token_staff" , data.tok)
-                    Axios.get("http://localhost:5000/isstaffauth",{
+                    Axios.get(baseURL+"/isstaffauth",{
                         headers:{
                             "x-access-token_staff": localStorage.getItem("token_staff")
                         }

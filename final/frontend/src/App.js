@@ -19,19 +19,24 @@ import "./style.css"
 import Axios from "axios"
 import { useEffect } from "react"
 import { useState } from "react"
+import baseURL from "./routerlink"
+
+console.log("baseURL ", baseURL)
+// import Routerlink from "./routerlink"
 const { Outlet } = require("react-router-dom")
 
-
+// const baseURL= baseURL+""
 const Route = require("react-router-dom").Route;
 const Routes = require("react-router-dom").Routes;
 
 function App() {
-
+// const val= <Routerlink/>
+// console.log(val)
 const [authcheck_staff, setauthcheck_staff]= useState(false)
 const [authcheck_std, setauthcheck_std]= useState(false)
   useEffect(()=>
   {
-    Axios.get("http://localhost:5000/isstaffauth",{
+    Axios.get(baseURL+"/isstaffauth",{
       headers:{
           "x-access-token_staff": localStorage.getItem("token_staff")
       }
@@ -53,17 +58,17 @@ const [authcheck_std, setauthcheck_std]= useState(false)
 // }
 const Protectedroutes_staff= ()=>{
   console.log("isauth", authcheck_staff)
-  return (authcheck_staff ? <Outlet/> : <Authentication/>)
+  return (authcheck_staff ? <Outlet/> :   <Authentication/>)
 }
 
   useEffect(()=>{
-    Axios.get("http://localhost:5000/isstdauth",{
+    Axios.get(baseURL+"/isstdauth",{
       headers:{
           "x-access-token_std":localStorage.getItem("token_stud")
       }
   })
   .then((res)=>{
-      console.log(res.data)
+      console.log("here ", res.data)
       if(res.data.hasOwnProperty("auth")){
         console.log("student")
         setauthcheck_std(true)

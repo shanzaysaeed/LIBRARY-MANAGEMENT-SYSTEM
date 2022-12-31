@@ -64,15 +64,11 @@ con.connect((err) => {
 
 
 
-// const sess = {
-//     username: '',
-//     password: ''
-// 
 
 
 const verifyjwt_staff= (req,res, next)=>{
     const token_staff = req.headers["x-access-token_staff"]
-    console.log("here")
+    //console.log("here")
     if(!token_staff){
         res.json({msg:"token required"})
     }
@@ -82,7 +78,7 @@ const verifyjwt_staff= (req,res, next)=>{
                 res.json({msg:"not verified"})
             }
             else{
-                console.log("yaha")
+                //console.log("yaha")
                 req.userid =decode.id
                 next()
             }
@@ -102,7 +98,7 @@ const verifyjwt_std=(req,res, next)=>{
             else{
                 
                 req.std_id= decode.student_id
-                console.log("verify ", 2)
+                //console.log("verify ", 2)
                 next()
             }
         })
@@ -111,19 +107,19 @@ const verifyjwt_std=(req,res, next)=>{
 }
 
 app.get("/isstaffauth",verifyjwt_staff,(req,res)=>{
-    // console.log("sending")
+    // //console.log("sending")
     res.json({auth:"yes"})
 })
 
 app.get("/isstdauth",verifyjwt_std, (req,res)=>{
-    console.log("student sending")
+    //console.log("student sending")
     res.json({auth:"yes"})
 
 })
 
 
 app.post("/sfsignup",(req,res)=>{
-    // console.log(req.body)
+    // //console.log(req.body)
     bcrypt.hash(`${req.body.pass}`, 10, (err, hash)=>{
         if(err) throw err
         else{
@@ -133,7 +129,7 @@ app.post("/sfsignup",(req,res)=>{
                     throw error
                 }
                 else{
-                    console.log("suucea")
+                    //console.log("suucea")
                     res.json({suc: "success"})
                 }
             })
@@ -159,9 +155,9 @@ app.post("/sflogin", (req,res)=>{
                     // 2 = req.body.s_id
                     // sess.password = req.body.pass
 
-                    // console.log(result)
+                    // //console.log(result)
                     const id= result[0].staff_id
-                    console.log(id)
+                    //console.log(id)
                     const token_staff = jwt.sign({id}, process.env.SESSION_KEY,{
                         expiresIn: 86400,
                     })
@@ -192,7 +188,7 @@ app.post("/stsignup", (req, res) => {
     });
 
 app.post("/stlogin", (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     con.query(`SELECT * FROM Students WHERE campus_id = '${req.body.c_id}'`, (err, result) => {
         if (err) throw err;
         else if (result.length === 0) {
@@ -206,7 +202,7 @@ app.post("/stlogin", (req, res) => {
                 }
                 if (results) {
                     const student_id= result[0].campus_id
-                    // console.log(student_id)
+                    // //console.log(student_id)
                     const token_student= jwt.sign({student_id},process.env.SESSION_KEY,{
                         expiresIn: 86400,
                     })
@@ -239,7 +235,7 @@ app.post("/Resolved",(req,res)=>{
         if(err)
         throw err
         else{
-            console.log("paassed")
+            //console.log("paassed")
             con.query('select Help.query as query, Students.campus_id as sid, Help.status as status from Help join Students on Students.campus_id= Help.student_id ORDER BY query_no DESC;', (err, result2)=>{
                 if(err)
                 throw err
@@ -255,7 +251,7 @@ app.get("/helpreq", (req,res)=>{
         if(err)
         throw err
         else{
-            console.log(result)
+            //console.log(result)
             res.send(result)
         }
     })
@@ -327,7 +323,7 @@ app.post("/Reject",(req,res)=>{
 
 
 app.post("/register",(req,res)=>{
-    console.log(req.body)
+    //console.log(req.body)
     res.send("hello peter")
 
 })
@@ -342,7 +338,7 @@ app.delete("/delbook/:id", (req, res)=>{
             // res.json(err)
          }
          else{
-            console.log("Book has been deleted")
+            //console.log("Book has been deleted")
             res.json("Book has been deleted Successfully")
          }
          
@@ -354,7 +350,7 @@ app.delete("/delbook/:id", (req, res)=>{
     const q = 'select * from Books LIMIT 10'
     con.query(q,(err,data)=>{
         if(err){
-            console.log("No Books in Database")
+            //console.log("No Books in Database")
         }
         else{
             res.json(data)
@@ -371,10 +367,10 @@ app.delete("/delbook/:id", (req, res)=>{
     }
 
     const q = `select * from Books where  ${col}  like  '${search}%' LIMIT 10`
-    console.log(q)
+    //console.log(q)
     con.query(q, (err,data)=>{
         if(err){
-            console.log("No Books in Database")
+            //console.log("No Books in Database")
             throw err
         }
         else{
@@ -384,7 +380,7 @@ app.delete("/delbook/:id", (req, res)=>{
 })
 
  app.post("/addbook", (req,res)=>{
-    // console.log(req.body)
+    // //console.log(req.body)
     const q = "INSERT INTO Books Values (?)"
     const values = [
         req.body.id, 
@@ -397,11 +393,11 @@ app.delete("/delbook/:id", (req, res)=>{
     ];
     con.query(q,[values], (err,data)=>{
         if(err){
-            console.log("Unable to add Books")
+            //console.log("Unable to add Books")
             res.json(err)
         }
         else{
-            console.log("Book has been added")
+            //console.log("Book has been added")
             res.json("Book has been added Successfully")
         }
         
@@ -424,11 +420,11 @@ app.put("/updatebook/:id", (req, res) => {
   
     con.query(q, [...values,bookId], (err, data) => {
         if(err){
-            console.log("Unable to Update Book")
+            //console.log("Unable to Update Book")
             // return res.json(err)
         }
         else{
-            console.log("Book has been updated")
+            //console.log("Book has been updated")
         res.json("Book has been updated Successfully")
         }
         
@@ -440,7 +436,7 @@ app.put("/updatebook/:id", (req, res) => {
 //     const q = 'Select * from Books'
 //     con.query(q,(err,data)=>{
 //         if(err){
-//             console.log("No Books in Database")
+//             //console.log("No Books in Database")
 //             // return res.json(err)
 //             // return
 //         }
@@ -449,13 +445,13 @@ app.put("/updatebook/:id", (req, res) => {
 // })
 
 app.get("/borrowedbooks/:id", (req,res)=>{
-    console.log('here')
+    //console.log('here')
     var par= req.params.id
     const q = 'SELECT * FROM Issued_Books natural join Books where student_id = ?' 
     // change here
     con.query(q,par,(err,data)=>{
         if(err){
-            console.log("No Books in Database")
+            //console.log("No Books in Database")
             // return res.json(err)
         }
         else{
@@ -469,7 +465,7 @@ app.get("/getlib", (req,res)=>{
     const q = 'select * from Staff where position = "Librarian"'
     con.query(q,(err,data)=>{
         if(err){
-            console.log("No Books in Database")
+            //console.log("No Books in Database")
             // return res.json(err)
         }
         else{
@@ -480,18 +476,18 @@ app.get("/getlib", (req,res)=>{
 })
 
 app.post("/issuebook/:id", (req,res)=>{
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.id
     par= par.split(" ")
     const lib_id = par[1];
-    // console.log(lib_id)
+    // //console.log(lib_id)
 
 
     var due_date = new Date(Date.now() + 12096e5);
     var due_date = due_date.toISOString().slice(0,10);
     
     const q = "INSERT INTO Issued_Books Values (?)"
-    console.log("hehet", 2)
+    //console.log("hehet", 2)
     
     const values = [
         req.body.book_id, 
@@ -499,14 +495,14 @@ app.post("/issuebook/:id", (req,res)=>{
         lib_id,
         due_date, 
     ];
-    console.log(q,[values])
+    //console.log(q,[values])
     con.query(q,[values], (err,data)=>{
         if(err){
-            console.log("Unable to issue Books")
+            //console.log("Unable to issue Books")
             // return res.json(err)
         }
         else{
-            console.log("Book has been issued")
+            //console.log("Book has been issued")
          res.json("Book has been issued Successfully")
 
         }
@@ -515,8 +511,8 @@ app.post("/issuebook/:id", (req,res)=>{
 })
 
 app.put("/setfine/:date", (req,res)=>{
-    // console.log('fine')
-    console.log("params",req.params)
+    // //console.log('fine')
+    //console.log("params",req.params)
     var par= req.params.date
     par= par.split(" ")
 
@@ -524,8 +520,8 @@ app.put("/setfine/:date", (req,res)=>{
     var due_date = new Date(par[1]);
     var fine = 0
     var current_date = new Date(Date.now());
-    // console.log(current_date)
-    // console.log(due_date)
+    // //console.log(current_date)
+    // //console.log(due_date)
     var y_diff = current_date.getFullYear()- due_date.getFullYear()
     if (y_diff >1){
         var m_diff = current_date.getMonth() - due_date.getMonth();
@@ -545,18 +541,18 @@ app.put("/setfine/:date", (req,res)=>{
             }
         }
     }
-    // console.log(fine)
+    // //console.log(fine)
 
     const q = "UPDATE Students SET total_fine_due = total_fine_due + ? WHERE campus_id = ?";
   
     // change here  
     con.query(q, [fine, par[0]], (err, data) => {
         if(err){
-            console.log("Unable to Update fine")
+            //console.log("Unable to Update fine")
             // return res.json(err)
         }
         else{
-            console.log("fine has been updated")
+            //console.log("fine has been updated")
         res.json("fine has been updated Successfully")
 
         }
@@ -565,7 +561,7 @@ app.put("/setfine/:date", (req,res)=>{
 })
 
 app.post("/returnbook/:id/", (req,res)=>{
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.id
     par= par.split(" ")
 
@@ -588,11 +584,11 @@ app.post("/returnbook/:id/", (req,res)=>{
                 res.json("Book has been returned Successfully")
             }
             else{
-                console.log("Unable to return Books")
+                //console.log("Unable to return Books")
             }
         }
         else{
-            console.log("Book has been returned")
+            //console.log("Book has been returned")
             res.json("Book has been returned Successfully")
         }
         
@@ -600,7 +596,7 @@ app.post("/returnbook/:id/", (req,res)=>{
 })
 
 app.delete("/book/:id", (req, res)=>{
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.id
     par= par.split(" ")
 
@@ -610,11 +606,11 @@ app.delete("/book/:id", (req, res)=>{
     // chnage here
     con.query(q, [bookId,par[0]], (err,data)=>{
         if(err){
-            console.log("Unable to return Books")
+            //console.log("Unable to return Books")
             // return res.json(err)
         }
         else{
-        console.log("Book has been returned")
+        //console.log("Book has been returned")
         res.json("Book has been return Successfully")
 
         }
@@ -634,11 +630,11 @@ app.put("/updateStatus/:id", (req, res) => {
   
     con.query(q, [...values,bookId], (err, data) => {
         if(err){
-            console.log("Unable to Update Book")
+            //console.log("Unable to Update Book")
             // return res.json(err)
         }
         else{
-            console.log("Book has been updated")
+            //console.log("Book has been updated")
          res.json("Book has been updated Successfully")
 
         }
@@ -648,7 +644,7 @@ app.put("/updateStatus/:id", (req, res) => {
 
 app.put("/revertStatus/:id", (req, res) => {
     const bookId = req.params.id;
-    console.log(bookId)
+    //console.log(bookId)
     const q = "UPDATE Books SET status = ? WHERE book_id = ?";
   
     const values = [
@@ -657,11 +653,11 @@ app.put("/revertStatus/:id", (req, res) => {
   
     con.query(q, [...values,bookId], (err, data) => {
         if(err){
-            console.log("Unable to Update Book")
+            //console.log("Unable to Update Book")
             //  res.json(err)
         }
         else{
-            console.log("Book has been updated")
+            //console.log("Book has been updated")
             res.json("Book has been updated Successfully")
         }
         
@@ -670,7 +666,7 @@ app.put("/revertStatus/:id", (req, res) => {
 
 
 app.get("/getduedate/:id", (req,res)=>{
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.id
     par= par.split(" ")
     // const lib_id = par[1];
@@ -679,7 +675,7 @@ app.get("/getduedate/:id", (req,res)=>{
     // change here
     con.query(q,[par[0],bookId],(err,data)=>{
         if(err){
-            console.log("No Books in Database")
+            //console.log("No Books in Database")
             // return res.json(err)
         }
         else{
@@ -691,7 +687,7 @@ app.get("/getduedate/:id", (req,res)=>{
 
 app.put("/Renew/:id", (req, res) => {
     // const bookId = req.params.id;
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.id
     par= par.split(" ")
     const bookId=par[1]
@@ -700,7 +696,7 @@ app.put("/Renew/:id", (req, res) => {
     old_date = Date.parse(req.body.due_date)
     new_date = new Date(old_date + 12096e5)
     new_date = new_date.toISOString().slice(0,10);
-    console.log(new_date)
+    //console.log(new_date)
     // change here
     const values = [
         new_date,
@@ -711,12 +707,12 @@ app.put("/Renew/:id", (req, res) => {
   
     con.query(q, [...values,bookId], (err, data) => {
         if(err){
-            console.log("Unable to Update due date")
+            //console.log("Unable to Update due date")
             // return res.json(err)
         }
-        // console.log(data)
+        // //console.log(data)
         else{
-        console.log("due date has been updated")
+        //console.log("due date has been updated")
         res.json("due date has been updated Successfully")
 
         }
@@ -726,7 +722,7 @@ app.put("/Renew/:id", (req, res) => {
 
 app.post("/requestbook/:id", (req,res)=>{
     const q = "INSERT INTO Requested_Books Values (?)"
-    console.log(req.params.id)
+    //console.log(req.params.id)
 
     const values = [
         req.body.title, 
@@ -737,14 +733,14 @@ app.post("/requestbook/:id", (req,res)=>{
         req.body.status, 
     ];
 
-    console.log(q,values)
+    //console.log(q,values)
     con.query(q,[values], (err,data)=>{
         if(err){
-            console.log("Unable to request Books")
+            //console.log("Unable to request Books")
             //  res.json(err)
         }
         else{
-            console.log("Book has been requested")
+            //console.log("Book has been requested")
             res.json("Book has been requested Successfully")
         }
        
@@ -756,7 +752,7 @@ app.get("/maxquery", (req,res)=>{
     const q = 'select count(query_no) as count from Help'
     con.query(q,(err,data)=>{
         if(err){
-            console.log("No query in Database")
+            //console.log("No query in Database")
             // return res.json(err)
         }
         else{
@@ -768,7 +764,7 @@ app.get("/maxquery", (req,res)=>{
 
 
 app.post("/help/:qno", (req,res)=>{
-    console.log("params",req.params)
+    //console.log("params",req.params)
     var par= req.params.qno
     par= par.split(" ")
     let qno = par[1];
@@ -784,21 +780,21 @@ app.post("/help/:qno", (req,res)=>{
         req.body.query, 
         req.body.status, 
     ]
-    console.log(q, [values])
+    //console.log(q, [values])
     con.query(q,[values], (err,data)=>{
         if(err){
-            console.log("Unable to request help")
+            //console.log("Unable to request help")
             // return res.json(err)
         }
         else{
-            console.log("help has been requested")
+            //console.log("help has been requested")
             res.json("help has been requested Successfully")
         }
        
     })
 })
 
-
-app.listen(5000, ()=>{
-    console.log("server listening on port 5000")
+const port= process.env.PORT || 5000;
+app.listen(port, ()=>{
+    //console.log("server listening on port 5000")
 })

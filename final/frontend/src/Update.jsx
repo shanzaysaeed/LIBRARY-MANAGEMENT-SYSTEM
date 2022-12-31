@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useNavigate, Link, useLocation} from "react-router-dom";
 // import {useEffect} from 'react';
 import {useState} from 'react';
+import baseURL from "./routerlink";
 
 const Updatebook = () => {
     const [book, setBook] = useState({
@@ -27,7 +28,7 @@ const Updatebook = () => {
     const handleClick = async e =>{
         e.preventDefault()
         try{
-            await axios.put("http://localhost:5000/updatebook/"+ bookId, book)
+            await axios.put(baseURL+"/updatebook/"+ bookId, book)
             navigate("/sfhome")
         }catch(err){
             console.log(err);

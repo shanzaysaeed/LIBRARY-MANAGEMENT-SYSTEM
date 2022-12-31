@@ -5,12 +5,14 @@ import {useEffect} from 'react';
 import {useState} from 'react';
 import arrow from './arrow.png';
 import Sfnav from './sfnavsect'
+import baseURL from "./routerlink";
+
 
 const Sfhome = () => {
     const [ses_info, setses_info]= useState("")
 
     useEffect(()=>{
-    fetch("http://localhost:5000/sess_info")
+    fetch(baseURL+"/sess_info")
 
     // console.log("here")
     // .then((res)=>res.json())
@@ -53,7 +55,7 @@ const Sfhome = () => {
         // console.log("here0")
         const fetchAllBooks = async()=>{
             try{
-                const res = await axios.get("http://localhost:5000/books")
+                const res = await axios.get(baseURL+"/books")
                 setBooks(res.data)
             }catch(err){
                 console.log(err)
@@ -64,7 +66,7 @@ const Sfhome = () => {
 
     const handleDelete = async (book)=>{
         try{
-            await axios.delete("http://localhost:5000/delbook/"+book.book_id)
+            await axios.delete(baseURL+"/delbook/"+book.book_id)
             window.location.reload()
             console.log(book);
         }catch(err){
@@ -89,8 +91,8 @@ const Sfhome = () => {
         try{
             const col = document.getElementById("selecttext");
             console.log(col)
-            // console.log("http://localhost:5000/books/"+col.innerText+"/"+Search.s)
-            const res = await axios.get("http://localhost:5000/searchbook/"+col.innerText+"/"+Search.s)
+            // console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            const res = await axios.get(baseURL+"/searchbook/"+col.innerText+"/"+Search.s)
             setBooks(res.data)
         }catch(err){
             console.log(err);

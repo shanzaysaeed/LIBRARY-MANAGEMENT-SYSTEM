@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./stsignup.css"
+import baseURL from "./routerlink";
 
 
 function Signupsf() {
@@ -20,7 +21,7 @@ function Signupsf() {
 
     seterror("")
 
-    fetch(`http://localhost:5000/sfsignup`,{
+    fetch(baseURL+`/sfsignup`,{
       method: "POST",
       headers:{
         'Accept':'application/json',

@@ -1,13 +1,14 @@
 import React, { useEffect, useState} from 'react'
 import './issued_books.css'
 import Sfnav from './sfnavsect'
+import baseURL from "./routerlink";
 
 
 function Booksiss() {
   const [booksinfo, setbooksinfo]= useState("")
   useEffect(()=>{
   console.log("sent")
-  fetch("http://localhost:5000/issbooks_info")
+  fetch(baseURL+"/issbooks_info")
   .then((res)=>res.json())
   .then((data)=>{  
       setbooksinfo(data)

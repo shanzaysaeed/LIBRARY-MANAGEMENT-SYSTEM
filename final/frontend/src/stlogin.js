@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate,Link } from "react-router-dom"
 import  Axios  from "axios"
+import baseURL from "./routerlink";
+
 import "./stlogin.css"
 
 function Loginst(){
@@ -13,7 +15,7 @@ function Loginst(){
     const handlesubmit=(e)=>{
         e.preventDefault()
         seterror("")
-        fetch("http://localhost:5000/stlogin",{
+        fetch(baseURL+"/stlogin",{
             method:"POST",
             headers:{
                 'Accept':'application/json',
@@ -28,7 +30,7 @@ function Loginst(){
                 if(data.hasOwnProperty("suc")){
                     localStorage.setItem("token_stud", data.tok)
                     const userid= data.id
-                    Axios.get("http://localhost:5000/isstdauth",{
+                    Axios.get(baseURL+"/isstdauth",{
                         headers:{
                             "x-access-token_std":localStorage.getItem("token_stud")
                         }
