@@ -19,10 +19,11 @@ function Booksret() {
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear()
-    today = dd + '-' + mm + '-' + yyyy;
+    today = yyyy + '-' + mm + '-' + dd;
     console.log(today)
     let temp_data= data.filter((obj)=>{
         console.log(obj)
+        console.log(today)
         if(obj.r_date === today){   
             return true
         }

@@ -130,7 +130,7 @@ app.post("/sfsignup",(req,res)=>{
             console.log(req.body.s_id)
             con.query(`SELECT * FROM Staff WHERE staff_id=`+req.body.s_id, (check, rs)=>{
                 // console.log("result ", checkrs)
-            if(rs,length===0){
+            if(rs.length===0){
                     con.query("INSERT INTO Staff (name, staff_id, password, contact_number, position) VALUES(?,?,?,?,?)", [req.body.u_name, req.body.s_id, hash,req.body.c_num, req.body.pos],(error, result)=>{
                     if (error) throw error
                     else{
