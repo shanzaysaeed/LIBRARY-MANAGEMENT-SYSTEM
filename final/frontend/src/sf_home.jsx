@@ -11,14 +11,14 @@ import baseURL from "./routerlink";
 const Sfhome = () => {
     const [ses_info, setses_info]= useState("")
 
-    useEffect(()=>{
-    fetch(baseURL+"/sess_info")
+//     useEffect(()=>{
+//     fetch(baseURL+"/sess_info")
 
-    // console.log("here")
-    // .then((res)=>res.json())
-    .then((data)=> console.log(data))
+//     // console.log("here")
+//     // .then((res)=>res.json())
+//     .then((data)=> console.log(data))
 
-  },[])
+//   },[])
  
     useEffect(() => {
         const script = document.createElement('script');

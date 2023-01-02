@@ -37,8 +37,7 @@ function Authentication(){
                 </form>
         </div>
     </div>
-
-    )
+)
 }
 
 export default Authentication

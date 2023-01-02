@@ -41,6 +41,7 @@ function Signupsf() {
         navigate("/sflogin");
       }
       else{
+        console.log(data)
         seterror(data.err) 
       }     
   })

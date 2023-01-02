@@ -34,22 +34,23 @@ function App() {
 // console.log(val)
 const [authcheck_staff, setauthcheck_staff]= useState(false)
 const [authcheck_std, setauthcheck_std]= useState(false)
+const [rescheck_sf, setrescheck_sf]= useState(false)
+const [rescheck_st, setrescheck_st]= useState(false)
   useEffect(()=>
   {
-    Axios.get(baseURL+"/isstaffauth",{
-      headers:{
-          "x-access-token_staff": localStorage.getItem("token_staff")
-      }
+    Axios.post(baseURL+"/isstaffauth",{
+      "jwt_token_staff": localStorage.getItem("token_staff")
   })
   .then((res)=>{
-      console.log(res.data)
+      console.log("here ", res.data)
       if(res.data.hasOwnProperty("auth")){
           console.log("here")
           setauthcheck_staff(true)
-      }
-      else{
-        setauthcheck_staff(false)
-      }
+        }
+        else{
+          setauthcheck_staff(false)
+        }
+        setrescheck_sf(true)
   })
   },[])
 
@@ -57,18 +58,15 @@ const [authcheck_std, setauthcheck_std]= useState(false)
 //   return <div>you're not authorized</div>
 // }
 const Protectedroutes_staff= ()=>{
-  console.log("isauth", authcheck_staff)
-  return (authcheck_staff ? <Outlet/> :   <Authentication/>)
+  return ( rescheck_sf &&   (authcheck_staff ? <Outlet/> : <Authentication/>))
 }
 
   useEffect(()=>{
-    Axios.get(baseURL+"/isstdauth",{
-      headers:{
-          "x-access-token_std":localStorage.getItem("token_stud")
-      }
+    Axios.post(baseURL+"/isstdauth",{
+      "jwt_token_std":localStorage.getItem("token_stud")
   })
   .then((res)=>{
-      console.log("here ", res.data)
+      // console.log("here ", res.data)
       if(res.data.hasOwnProperty("auth")){
         console.log("student")
         setauthcheck_std(true)
@@ -76,6 +74,7 @@ const Protectedroutes_staff= ()=>{
       else{
         setauthcheck_std(false)
       }
+      setrescheck_st(true)
   })
 
 },[])
@@ -83,7 +82,7 @@ const Protectedroutes_staff= ()=>{
 
 
 const Protectedroutes_std=()=>{
-  return (authcheck_std ? <Outlet/> : <Authentication/>)
+  return ( rescheck_st &&   (authcheck_std ? <Outlet/> : <Authentication/>))
 }
   return (
     <Routes>

@@ -30,10 +30,8 @@ function Loginst(){
                 if(data.hasOwnProperty("suc")){
                     localStorage.setItem("token_stud", data.tok)
                     const userid= data.id
-                    Axios.get(baseURL+"/isstdauth",{
-                        headers:{
-                            "x-access-token_std":localStorage.getItem("token_stud")
-                        }
+                    Axios.post(baseURL+"/isstdauth",{
+                        "jwt_token_std":localStorage.getItem("token_stud")
                     })
                     .then((res)=>{
                         console.log(res.data)

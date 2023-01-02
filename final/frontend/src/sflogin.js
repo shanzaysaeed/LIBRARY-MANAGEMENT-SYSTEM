@@ -32,10 +32,8 @@ function Loginst(){
             .then((data)=>{
                 if(data.hasOwnProperty("suc")){
                     localStorage.setItem("token_staff" , data.tok)
-                    Axios.get(baseURL+"/isstaffauth",{
-                        headers:{
-                            "x-access-token_staff": localStorage.getItem("token_staff")
-                        }
+                    Axios.post(baseURL+"/isstaffauth",{
+                        "jwt_token_staff": localStorage.getItem("token_staff")
                     })
                     .then((res)=>{
                         console.log(res.data)
@@ -55,9 +53,10 @@ function Loginst(){
     return(
     <div id="outer_div" >
         <nav id="navbar-section">
-           <h1 id="page-title">Welcome to LMS</h1>
-           
-       </nav>
+        <h1 id="page-title">Welcome to LMS</h1>
+        <a style={{textDecoration: "none", color:"white"}}  href="" onClick={()=>{navigate("/")}} >Change Status</a>
+
+    </nav>
         <div id="main_div">
             <h1  id='box_heading'>Login</h1>
             <div style={{color: "red"}}>{error}</div>

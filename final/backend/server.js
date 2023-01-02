@@ -67,7 +67,9 @@ con.connect((err) => {
 
 
 const verifyjwt_staff= (req,res, next)=>{
-    const token_staff = req.headers["x-access-token_staff"]
+    // const token_staff = req.headers["x-access-token_staff"]
+    const token_staff= req.body.jwt_token_staff
+    // console.log(req.body.jwt_token_staff)
     //console.log("here")
     if(!token_staff){
         res.json({msg:"token required"})
@@ -75,6 +77,7 @@ const verifyjwt_staff= (req,res, next)=>{
     else{
         jwt.verify(token_staff, process.env.SESSION_KEY, (err,decode)=>{
             if(err){
+
                 res.json({msg:"not verified"})
             }
             else{
@@ -86,7 +89,7 @@ const verifyjwt_staff= (req,res, next)=>{
     }
 }
 const verifyjwt_std=(req,res, next)=>{
-    const token_std= req.headers["x-access-token_std"]
+    const token_std= req.body.jwt_token_std
     if(!token_std){
         res.json({msg:"token required"})
     }
@@ -106,12 +109,12 @@ const verifyjwt_std=(req,res, next)=>{
 
 }
 
-app.get("/isstaffauth",verifyjwt_staff,(req,res)=>{
-    // //console.log("sending")
+app.post("/isstaffauth",verifyjwt_staff,(req,res)=>{
+    console.log("staff authentication recived")
     res.json({auth:"yes"})
 })
 
-app.get("/isstdauth",verifyjwt_std, (req,res)=>{
+app.post("/isstdauth",verifyjwt_std, (req,res)=>{
     //console.log("student sending")
     res.json({auth:"yes"})
 
@@ -119,22 +122,27 @@ app.get("/isstdauth",verifyjwt_std, (req,res)=>{
 
 
 app.post("/sfsignup",(req,res)=>{
+    console.log("signup")
     // //console.log(req.body)
     bcrypt.hash(`${req.body.pass}`, 10, (err, hash)=>{
         if(err) throw err
         else{
-            con.query("INSERT INTO Staff (name, staff_id, password, contact_number, position) VALUES(?,?,?,?,?)", [req.body.u_name, req.body.s_id, hash,req.body.c_num, req.body.pos],(error, result)=>{
-                if(error){
-                    res.json({err:"staff already exist"})
-                    throw error
-                }
-                else{
-                    //console.log("suucea")
-                    res.json({suc: "success"})
-                }
-            })
+            console.log(req.body.s_id)
+            con.query(`SELECT * FROM Staff WHERE staff_id=`+req.body.s_id, (check, rs)=>{
+                // console.log("result ", checkrs)
+            if(rs,length===0){
+                    con.query("INSERT INTO Staff (name, staff_id, password, contact_number, position) VALUES(?,?,?,?,?)", [req.body.u_name, req.body.s_id, hash,req.body.c_num, req.body.pos],(error, result)=>{
+                    if (error) throw error
+                    else{
+                        res.json({suc: "success"})
+                    }
+            })}
+            else{
+                console.log("here whu ?/")
+                res.json({err:"staff already exist"})
+            }
+        })
         }
-
     })
     
 })
@@ -161,8 +169,6 @@ app.post("/sflogin", (req,res)=>{
                     const token_staff = jwt.sign({id}, process.env.SESSION_KEY,{
                         expiresIn: 86400,
                     })
-
-
                     res.json({tok: token_staff ,suc: "success"})
                 }
 
@@ -174,16 +180,26 @@ app.post("/stsignup", (req, res) => {
     bcrypt.hash(`${req.body.pass}`, 10, function (err, hash) {
         if (err) throw err;
         else {
-            con.query(`INSERT INTO Students (name,campus_id,password, contact_number) VALUES (?,?,?,?)`,[req.body.u_name, req.body.c_id,  hash,  req.body.c_num], (error, result) => {
-                if (error){
-               
-                    res.json({err: "Student alreaday exist"})
+            console.log(req.body)
+            con.query(`SELECT * FROM Students where campus_id=`+req.body.c_id, (err, rs)=>{
+                console.log(rs)
+                if(rs.length === 0){
+                    con.query(`INSERT INTO Students (name,campus_id,password, contact_number) VALUES (?,?,?,?)`,[req.body.u_name, req.body.c_id,  hash,  req.body.c_num], (error, result) => {
+                        if (error) throw error
+                        else {
+                            res.json({suc: "success"})
+                    
+                        }
+                    })
+                    
                 }
-                else {
-                    res.json({suc: "success"})
-            
+                else{
+                    
+                    res.json({err: "Student alreaday exist"})
+
                 }
             })
+            
         }})
     });
 
