@@ -3,23 +3,25 @@ import axios from 'axios';
 import {Link} from "react-router-dom";
 import {useEffect} from 'react';
 import {useState} from 'react';
-import arrow from './arrow.png';
-import Sfnav from './sfnavsect'
-import baseURL from "./routerlink";
+import arrow from '../arrow.png';
+// import Stnav from './stnav';
+import { useNavigate } from "react-router-dom";
+import "../sfnavsect.css"
+import baseURL from "../routerlink";
 
 
-const Sfhome = () => {
-    const [ses_info, setses_info]= useState("")
 
-//     useEffect(()=>{
-//     fetch(baseURL+"/sess_info")
+const Sthome = () => {
+    var full_url = document.URL; // Get current url
+    var url_array = full_url.split('?') // Split the string into an array with / as separator
+    const us_id=url_array[1].split(":")[1]
 
-//     // console.log("here")
-//     // .then((res)=>res.json())
-//     .then((data)=> console.log(data))
+    const navigate = useNavigate();
+    const handleclick=()=>{
+      localStorage.removeItem("token_stud");
+      navigate("/stlogin")
+    }
 
-//   },[])
- 
     useEffect(() => {
         const script = document.createElement('script');
         
@@ -56,6 +58,7 @@ const Sfhome = () => {
         const fetchAllBooks = async()=>{
             try{
                 const res = await axios.get(baseURL+"/books")
+                console.log("data",res.data)
                 setBooks(res.data)
             }catch(err){
                 console.log(err)
@@ -64,15 +67,22 @@ const Sfhome = () => {
         fetchAllBooks()
     },[])
 
-    const handleDelete = async (book)=>{
+    const handleIssue = async(book)=>{
         try{
-            await axios.delete(baseURL+"/delbook/"+book.book_id)
-            window.location.reload()
-            console.log(book);
+            
+
+            const res = await axios.get(baseURL+"/getlib")
+            // console.log(res.data.staff_id)
+
+            await axios.post(baseURL+`/issuebook/${us_id} ` + res.data.staff_id, book)
+            await axios.put(baseURL+`/updateStatus/`+ book.book_id, book)
+            // console.log(book);
+            refreshPage();
         }catch(err){
             console.log(err)
         }
     }
+
 
     const [Search, setSearch] = useState({ 
         s:"", 
@@ -102,8 +112,23 @@ const Sfhome = () => {
     // console.log(Search)
     return (
         <div style={{marginTop:"50px"}}>
-            <Sfnav></Sfnav>
-            <h1 className='head'>Home page</h1>
+        <div class="dropdown">
+            <nav id="navbar-section">
+                <h1 id="page-title">Welcome to LMS</h1>
+            <div>
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                <li><a class="nav_items" onClick={refreshPage} href="">Home Page</a></li>
+                <li><a href="" onClick={()=>navigate(`/borrowed_books?id:${us_id}`)}>View Isuued Books</a></li>
+                <li><a href="" onClick={()=>navigate(`/request?id:${us_id}`)}>Request a Book</a></li>
+                <li><a href="" onClick={()=>navigate(`/help?id:${us_id}`)}>Ask for help</a></li>
+                <li><a href="" onClick={handleclick}>Log out</a></li>
+                </div>
+                </div>
+            </nav> 
+        </div>
+            
+            <h1 className='head'>Home Page</h1>
             <div class="container">
                 <div class="search-bar">
                     <div id="select">
@@ -133,8 +158,10 @@ const Sfhome = () => {
                 <th>Status</th>
                 <th>Action</th>
                 </tr>
+               {console.log(books)}
                 
-                {books && books.map((book, key)=>{
+                { books &&
+                 books.map((book, key)=>{
                     return ( 
                     <tr key={key}>
                         <td>{book.book_id} </td>
@@ -144,20 +171,28 @@ const Sfhome = () => {
                         <td>{book.author}</td>
                         <td>{book.cost}</td>
                         <td>{book.status}</td>
-                        <td><button className='delete' onClick={()=>handleDelete(book)}>Delete Book</button> <br />
-                        <button className="update"><Link to={`/updatebook/${book.book_id}`} style={{ color: "inherit", textDecoration: "none" }} >Update Book</Link></button></td>
+                        {
+                            book.status==="Available"?
+                             <td><button className='delete' onClick={()=>handleIssue(book)}>Issue Book</button></td>
+                            : <td><button className='delete'> Issued</button></td> 
+                        }
+                       
                     </tr>
                     )
                 })}
             </table>
+
             <div className='bottom'>
                 <br />
                 <br />
                 <button onClick={refreshPage}>See all books</button>
-                <button ><Link to="/addbook">Add new Book</Link></button>
+                {/* <button className="update"><Link to={`/updatebook/${book.book_id}`} style={{ color: "inherit", textDecoration: "none" }} >Update Book</Link></button></td>  */}
+                <button ><Link to={`/borrowed_books?id:${us_id}`}  >View Issued Books</Link></button>
+                <button ><Link to={`/request?id:${us_id}`}>Request a Book</Link></button>
+                <button ><Link to={`/help?id:${us_id}`}>Ask for help</Link></button>
             </div>
         </div>
     )
 }
 
-export default Sfhome;
+export default Sthome;

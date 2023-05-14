@@ -1,12 +1,25 @@
 import React from 'react';
 import axios from 'axios';
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useEffect} from 'react';
 import {useState} from 'react';
-import arrow from './arrow.png';
-// import Add from "./pages/Add";
+import arrow from '../arrow.png';
+import Sfnav from '../sfnavsect'
+import baseURL from "../routerlink";
 
-const Books = () => {
+
+const Sfhome = () => {
+    const [ses_info, setses_info]= useState("")
+
+//     useEffect(()=>{
+//     fetch(baseURL+"/sess_info")
+
+//     // console.log("here")
+//     // .then((res)=>res.json())
+//     .then((data)=> console.log(data))
+
+//   },[])
+ 
     useEffect(() => {
         const script = document.createElement('script');
         
@@ -28,7 +41,6 @@ const Books = () => {
             }
         }
 
-        // script.src = "https://use.typekit.net/foobar.js";
         script.async = true;
       
         document.body.appendChild(script);
@@ -38,7 +50,7 @@ const Books = () => {
         }
     }, []);
     
-    const [books, setBooks] = useState([])
+    let [books, setBooks] = useState([])
     useEffect(()=>{
         // console.log("here0")
         const fetchAllBooks = async()=>{
@@ -52,10 +64,11 @@ const Books = () => {
         fetchAllBooks()
     },[])
 
-    const handleDelete = async (id)=>{
+    const handleDelete = async (book)=>{
         try{
-            await axios.delete(baseURL+"/book/"+id)
+            await axios.delete(baseURL+"/delbook/"+book.book_id)
             window.location.reload()
+            console.log(book);
         }catch(err){
             console.log(err)
         }
@@ -65,7 +78,9 @@ const Books = () => {
         s:"", 
     });
 
-    const navigate = useNavigate();
+    function refreshPage() {
+        window.location.reload(false);
+      }
 
     const handleChange = (e) =>{
         setSearch(prev=>({...prev, [e.target.name]: e.target.value}))
@@ -76,18 +91,19 @@ const Books = () => {
         try{
             const col = document.getElementById("selecttext");
             console.log(col)
-            console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
-            const res = await axios.get(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            // console.log(baseURL+"/books/"+col.innerText+"/"+Search.s)
+            const res = await axios.get(baseURL+"/searchbook/"+col.innerText+"/"+Search.s)
             setBooks(res.data)
         }catch(err){
             console.log(err);
         }
     }
 
-    console.log(Search)
+    // console.log(Search)
     return (
-        <div>
-            <h1>Library Management System</h1>
+        <div style={{marginTop:"50px"}}>
+            <Sfnav></Sfnav>
+            <h1 className='head'>Home page</h1>
             <div class="container">
                 <div class="search-bar">
                     <div id="select">
@@ -105,32 +121,43 @@ const Books = () => {
                     <button onClick={handleClick}>Search</button>
                 </div>
             </div>
-            <div className="title">
-                <p>Book Id</p>
-                <p>Title</p>
-                <p>Release Date</p>
-                <p>Edition</p>
-                <p>Author</p>
-                <p>Cost</p>
-            </div>
-            <div className='books'>
-                {books.map(book=>(
-                  <div className='book' key={book.book_id}>
-                    <p>{book.book_id}</p>
-                    <p>{book.title}</p>
-                    <p>{book.released_date}</p>
-                    <p>{book.edition}</p>
-                    <p>{book.author}</p>
-                    <span>{book.cost}</span>
-                    <button className='delete' onClick={()=>handleDelete(book.book_id)}>Delete Book</button>
-                    <button className="update"><Link to={`/update/${book.book_id}`} style={{ color: "inherit", textDecoration: "none" }} >Update Book</Link></button>
-                  </div>  
-                ))}
-            </div>
             <br />
-            <button><Link to="/add">Add new Book</Link></button>
+            <table id='table'>
+                <tr>
+                <th>Book Id</th>
+                <th>Title</th>
+                <th>Release Date</th>
+                <th>Edition</th>
+                <th>Author</th>
+                <th>Cost</th>
+                <th>Status</th>
+                <th>Action</th>
+                </tr>
+                
+                {books && books.map((book, key)=>{
+                    return ( 
+                    <tr key={key}>
+                        <td>{book.book_id} </td>
+                        <td>{book.title} </td>
+                        <td>{book.released_date.slice(0,10)}</td>
+                        <td>{book.edition}</td>
+                        <td>{book.author}</td>
+                        <td>{book.cost}</td>
+                        <td>{book.status}</td>
+                        <td><button className='delete' onClick={()=>handleDelete(book)}>Delete Book</button> <br />
+                        <button className="update"><Link to={`/updatebook/${book.book_id}`} style={{ color: "inherit", textDecoration: "none" }} >Update Book</Link></button></td>
+                    </tr>
+                    )
+                })}
+            </table>
+            <div className='bottom'>
+                <br />
+                <br />
+                <button onClick={refreshPage}>See all books</button>
+                <button ><Link to="/addbook">Add new Book</Link></button>
+            </div>
         </div>
     )
 }
 
-export default Books;
+export default Sfhome;

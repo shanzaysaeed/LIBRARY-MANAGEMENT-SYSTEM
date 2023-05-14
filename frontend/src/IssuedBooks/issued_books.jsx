@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import './issued_books.css'
-import Sfnav from './sfnavsect'
-import baseURL from "./routerlink";
+import Sfnav from '../sfnavsect'
+import baseURL from "../routerlink";
 
 
 function Booksiss() {

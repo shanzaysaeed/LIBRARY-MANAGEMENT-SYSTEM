@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import './req_books.css'
-import baseURL from './routerlink'
-import Sfnav from './sfnavsect'
+import baseURL from '../routerlink'
+import Sfnav from '../sfnavsect'
 
 
 function Booksreq() {

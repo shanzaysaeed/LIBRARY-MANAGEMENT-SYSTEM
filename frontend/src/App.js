@@ -1,25 +1,25 @@
 
-import Booksreq from "./req_books" 
-import Booksret from "./retunred_books"
-import Booksiss from "./issued_books"
-import Helpreq from "./help_req"
-import Signupst from "./stsignup"
-import Loginst from "./stlogin"
-import Authentication from "./auth"
-import Signupsf from "./sfsignup"
-import Loginsf from "./sflogin"
-import Sthome from "./st_home";
-import BorrowedBooks from "./borrowed_books";
-import Request from "./request_book";
-import Help from "./help";
-import Sfhome from "./sf_home";
-import Addbook from "./Add";
-import Updatebook from "./Update";
+import Booksreq from "./RequestedBooks/req_books" 
+import Booksret from "./ReturnedBooks/retunred_books"
+import Booksiss from "./IssuedBooks/issued_books"
+import Helpreq from "./Help/help_req"
+import Signupst from "./StudentSignup/stsignup"
+import Loginst from "./StudentLogin/stlogin"
+import Authentication from "./Auth/auth"
+import Signupsf from "./StaffSignup/sfsignup"
+import Loginsf from "./StaffLogin/sflogin"
+import Sthome from "./StudentHome/st_home";
+import BorrowedBooks from "./BorrowedBooks/borrowed_books";
+import Request from "./RequestedBooks/request_book";
+import Help from "./Help/help";
+import Sfhome from "./StaffHome/sf_home";
+import Addbook from "./Add/Add";
+import Updatebook from "./Update/Update";
 import "./style.css"
 import Axios from "axios"
 import { useEffect,useLayoutEffect } from "react"
 import { useState } from "react"
-import baseURL from "./routerlink"
+import baseURL from "./routerlink";
 
 console.log("baseURL ", baseURL)
 // import Routerlink from "./routerlink"

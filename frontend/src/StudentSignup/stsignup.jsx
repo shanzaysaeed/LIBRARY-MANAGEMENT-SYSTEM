@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./stsignup.css"
-import baseURL from "./routerlink";
+import baseURL from "../routerlink";
 
 
 
